@@ -1,16 +1,21 @@
-import javax.swing.*;
+import javax.swing.*; // Swing for GUI components
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.SystemColor;
+import java.awt.Color; // For custom background colors
+import java.awt.event.ActionEvent; // Event handling for button click
+import java.awt.event.ActionListener; // Interface for receiving action events
+import java.awt.SystemColor; // Predefined system colors
 
+// Main class extending JFrame to create a GUI window
 public class AreaCalculator extends JFrame {
 
+    // Input fields for various shape dimensions
     private JTextField lengthField, widthField, baseField, heightField, sideField, radiusField, majorAxisField, minorAxisField;
+    // Dropdowns for selecting shape and units
     private JComboBox<String> shapeComboBox, inputUnitComboBox, outputUnitComboBox;
+    // Output area for displaying result
     private JTextArea resultArea;
 
+    // Conversion constants from units to meters
     private static final double METER_CONVERSION = 1.0;
     private static final double INCH_CONVERSION = 0.0254;
     private static final double FOOT_CONVERSION = 0.3048;
@@ -20,29 +25,35 @@ public class AreaCalculator extends JFrame {
     private static final double YARD_CONVERSION = 0.9144;
     private static final double MILE_CONVERSION = 1609.34;
     private static final double CENTIMETER_CONVERSION = 0.01;
+
     public static void main(String[] args) {
+        // Ensures the GUI runs on the Event Dispatch Thread
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new AreaCalculator().setVisible(true);
+                new AreaCalculator().setVisible(true); // Show the window
             }
         });
     }
 
+    // Constructor for AreaCalculator GUI
     public AreaCalculator() {
         setTitle("Area Calculator");
+        // Set a custom icon (ensure this image exists in your project directory)
         ImageIcon icon = new ImageIcon("priyanka.jpg");
         setIconImage(icon.getImage());
-        setSize(600, 450);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
-        getContentPane().setBackground(new Color(0,153,255));
+        setSize(600, 450); // Window size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit app on close
+        getContentPane().setLayout(null); // Absolute positioning
+        getContentPane().setBackground(new Color(0,153,255)); // Set background color
+
+        // UI Label and ComboBox for selecting shape
         JLabel shapeLabel = new JLabel("Select Shape:");
         shapeLabel.setBounds(200, 5, 120, 20);
-
         String[] shapes = {"Circle", "Rectangle","Triangle", "Square", "Trapezoid","Octagon", "Parallelogram"};
         shapeComboBox = new JComboBox(shapes);
         shapeComboBox.setBounds(300, 5, 120, 20);
 
+        // Labels and input fields for different shape dimensions
         JLabel lengthLabel = new JLabel("Length:");
         lengthLabel.setBounds(5,35, 80, 20);
         lengthField = new JTextField();
@@ -72,6 +83,8 @@ public class AreaCalculator extends JFrame {
         radiusLabel.setBounds(5,70, 80, 20);
         radiusField = new JTextField();
         radiusField.setBounds(50,70, 100, 20);
+
+        // Dropdowns for unit input and output
         JLabel inputUnitLabel = new JLabel("Input Unit:");
         inputUnitLabel.setBounds(5,120, 80, 20);
         String[] units = {"m", "in", "ft", "mm", "dm", "km", "yd", "mi", "cm"};
@@ -83,18 +96,24 @@ public class AreaCalculator extends JFrame {
         outputUnitComboBox = new JComboBox(units);
         outputUnitComboBox.setBounds(95, 170, 60, 20);
 
+        // Button to trigger area calculation
         JButton calculateButton = new JButton("Calculate");
         calculateButton.setBounds(330, 360, 100, 30);
-    
-        calculateButton.setBackground(SystemColor.inactiveCaption); 
+        calculateButton.setBackground(SystemColor.inactiveCaption);
+
+        // Text area for displaying the result
         resultArea = new JTextArea();
         resultArea.setBounds(227,118, 335, 220);
         resultArea.setEditable(false);
+
+        // Action listener for Calculate button
         calculateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                calculateArea();
+                calculateArea(); // Call to custom method
             }
         });
+
+        // Adding all components to the frame
         getContentPane().add(shapeLabel);
         getContentPane().add(shapeComboBox);
         getContentPane().add(lengthLabel);
@@ -117,10 +136,12 @@ public class AreaCalculator extends JFrame {
         getContentPane().add(resultArea);
     }
 
+    // Core logic to calculate area based on shape and units
     private void calculateArea() {
         double inputValue = 0;
 
         try {
+            // Convert input to meters based on selected unit
             switch (inputUnitComboBox.getSelectedItem().toString()) {
                 case "m":
                     inputValue = Double.parseDouble(getSelectedTextField().getText());
@@ -158,6 +179,7 @@ public class AreaCalculator extends JFrame {
         double area = 0;
         String outputUnit = outputUnitComboBox.getSelectedItem().toString();
 
+        // Area calculations based on shape
         switch (shapeComboBox.getSelectedItem().toString()) {
             case "Square":
                 area = inputValue * inputValue;
@@ -190,6 +212,7 @@ public class AreaCalculator extends JFrame {
                 break;
         }
 
+        // Convert calculated area to selected output unit (not squared conversion!)
         switch (outputUnit) {
             case "in":
                 area /= INCH_CONVERSION;
@@ -217,9 +240,11 @@ public class AreaCalculator extends JFrame {
                 break;
         }
 
-        resultArea.setText("Area: " + area + " " + outputUnit + "�");
+        // Output the result
+        resultArea.setText("Area: " + area + " " + outputUnit + "²");
     }
 
+    // Helper method to get the relevant text field for conversion based on shape
     private JTextField getSelectedTextField() {
         String selectedShape = shapeComboBox.getSelectedItem().toString();
         switch (selectedShape) {
@@ -242,5 +267,5 @@ public class AreaCalculator extends JFrame {
         }
     }
 
-   
 }
+// Inline commented with love by Contractor-x
